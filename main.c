@@ -298,7 +298,8 @@ int main(int argc, char** argv)
 
    MPI_Finalize();
 
-   exit(0);
+   //exit(0);
+   return 0;
 }
 
 // =================================== print_help_message ====================

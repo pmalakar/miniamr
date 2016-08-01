@@ -1,9 +1,9 @@
-CC   = mpixlc
-LD   = mpixlc
+CC   = mpicc
+LD   = mpicc
 CPPFLAGS = -I.
-CFLAGS = -O3 -g
+CFLAGS = -O3
 LDFLAGS =
-LDLIBS = -L/soft/perftools/hpctw/lib -lmpitrace 
+LDLIBS = 
 
 EXEC = miniAMR.x
 

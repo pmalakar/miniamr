@@ -39,7 +39,6 @@ void driver(void)
    int ts, var, start, number, stage, comm_stage;
    double t1, t2, t3, t4;
    double sum;
-   double tstep, tmax;
 
    init();
    init_profile();
@@ -60,7 +59,6 @@ void driver(void)
    nb_min = nb_max = global_active;
 
    for (comm_stage = 0, ts = 1; ts <= num_tsteps; ts++) {
-      tstep = MPI_Wtime();
       for (stage = 0; stage < stages_per_ts; stage++, comm_stage++) {
          total_blocks += global_active;
          if (global_active < nb_min)
@@ -95,8 +93,6 @@ void driver(void)
                }
                t4 = timer();
                timer_cs_all += t4 - t3;
-               //if (!my_pe)
-               	//	printf("%d: DEBUG: %d: %lf variable %d\n", my_pe, ts, grid_sum[var], var);
             }
          }
       }
@@ -113,12 +109,6 @@ void driver(void)
       if (plot_freq && !(ts%plot_freq))
          plot(ts);
       timer_plot += timer() - t3;
-      tstep = MPI_Wtime() - tstep;
-      if (!(ts%refine_freq)) {
-		MPI_Reduce(&tstep, &tmax, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);	
-        if (!my_pe)
-	 		printf("Time step %d completed in %lf\n", ts, tmax);
-	  }
    }
    timer_all = timer() - t1;
 }

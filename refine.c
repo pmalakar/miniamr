@@ -40,7 +40,6 @@ void refine(int ts)
        nm_r, nm_c, nm_t;
    double ratio, tp, tm, tu, tp1, tm1, tu1, t1, t2, t3, t4, t5;
    block *bp;
-   int count_blocks = 0;
 
    nrs++;
    nm_r = nm_c = nm_t = 0;
@@ -179,7 +178,7 @@ void refine(int ts)
 
    if (target_active || target_max || target_min) {
       if (!my_pe) {
-         for (j = 0; j <= num_refine; j++) 
+         for (j = 0; j <= num_refine; j++)
             printf("Number of blocks at level %d before target %d is %d\n",
                    j, ts, num_blocks[j]);
          printf("\n");
@@ -212,21 +211,16 @@ void refine(int ts)
                  MPI_COMM_WORLD);
    i = nm_r + nm_c + nm_t;
    MPI_Allreduce(&i, &num_split, 1, MPI_INTEGER, MPI_SUM, MPI_COMM_WORLD);
-   count_blocks = 0;
    for (j = 0; j <= num_refine; j++) {
       if (!j)
          global_active = num_blocks[0];
       else
          global_active += num_blocks[j];
-      if (!my_pe && report_perf & 8) {
-         printf("Number of blocks at level %d at timestep %d is %d\n",
-                j, ts, num_blocks[j]);
-         count_blocks += num_blocks[j];
-	  }
+     // if (!my_pe && report_perf & 8)
+     //    printf("Number of blocks at level %d at timestep %d is %d\n",
+     //           j, ts, num_blocks[j]);
    }
    if (!my_pe && report_perf & 8) printf("\n");
-   if (!my_pe && report_perf & 8) 
-      printf("\nTotal number of blocks at timestep %d is %d\n", ts, count_blocks);
    timer_refine_sy += timer() - t2;
    t4 += timer() - t2;
 
