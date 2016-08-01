@@ -17,11 +17,11 @@ do
   #for size in 10 40 80 120 160 200 240 280
   for maxblockspe in 4000 
   do
-	 for nx in 2  
+	 for nx in 8  
     do
-	  for ny in 2  
+	  for ny in 8  
 	  do	
-	   for nz in 2  
+	   for nz in 8  
 	   do	
 		echo 
 		echo "* * * * *"
@@ -56,17 +56,18 @@ do
 			npx=32
 			npy=16
 			npz=16
+		elif [ $RANKS -eq 16384 ]; then		
+			npx=32
+			npy=32
+			npz=16
+		elif [ $RANKS -eq 32768 ]; then		
+			npx=32
+			npy=32
+			npz=32
 		fi	
 
-		#one expanding sphere
-		#ARGS="--num_refine 4 --max_blocks 6000 --init_x 1 --init_y 1 --init_z 1 --npx 8 --npy 4 --npz 4 --nx 16 --ny 8 --nz 8 --num_objects 1 --object 2 0 -0.01 -0.01 -0.01 0.0 0.0 0.0 0.0 0.0 0.0 0.0009 0.0009 0.0009 --num_tsteps 200 --comm_vars 2 --report_perf 1
-
 		#2 moving spheres
-		#ARGS="--num_refine 4 --max_blocks $maxblockspe --init_x 1 --init_y 1 --init_z 1 --npx $npx --npy $npy --npz $npz --nx $nx --ny $ny --nz $nz --num_objects 2 --object 2 0 -1.10 -1.10 -1.10 0.030 0.030 0.030 1.5 1.5 1.5 0.0 0.0 0.0 --object 2 0 0.5 0.5 1.76 0.0 0.0 -0.025 0.75 0.75 0.75 0.0 0.0 0.0 --num_tsteps 100 --checksum_freq 4 --stages_per_ts 16" 
 		ARGS="--num_refine 4 --max_blocks $maxblockspe --init_x 1 --init_y 1 --init_z 1 --npx $npx --npy $npy --npz $npz --nx $nx --ny $ny --nz $nz --num_objects 2 --object 2 0 -1.10 -1.10 -1.10 0.030 0.030 0.030 1.5 1.5 1.5 0.0 0.0 0.0 --object 2 0 0.5 0.5 1.76 0.0 0.0 -0.025 0.75 0.75 0.75 0.0 0.0 0.0 --num_tsteps 60 --stages_per_ts 16" 
-
-#--env TAU_TRACK_MESSAGE=1:TAU_THROTTLE=0:TAU_COMM_MATRIX=1 ./miniAMR.x.tau --num_refine 4 --max_blocks 4000 --init_x 1 --init_y 1 --init_z 1 --npx 16 --npy 16 --npz 8 --nx 8 --ny 8 --nz 8 --num_objects 2 --object 2 0 -1.10 -1.10 -1.10 0.030 0.030 0.030 1.5 1.5 1.5 0.0 0.0 0.0 --object 2 0 0.5 0.5 1.76 0.0 0.0 -0.025 0.75 0.75 0.75 0.0 0.0 0.0 --num_tsteps 40 --stages_per_ts 16
-
 
 		OUTPUT=${PROG}_${iter}_${maxblockspe}_N${NODES}_R${ppn}
 		ENVS="PAMID_COLLECTIVES_MEMORY_OPTIMIZED=1"
